@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Married Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #f5f5f5;
+        }
+        .timer-test {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .countdown {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .countdown-item {
+            background: #e84393;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+        .countdown-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .countdown-label {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-test">
+        <h1>Married Timer Test</h1>
+        <p>Wedding Date: February 22, 2023</p>
+        <p>Current Date: <span id="currentDate"></span></p>
+        
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="years">0</span>
+                <span class="countdown-label">Years</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="months">0</span>
+                <span class="countdown-label">Months</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+        </div>
+        
+        <div id="debug" style="margin-top: 20px; font-family: monospace; font-size: 12px;"></div>
+    </div>
+
+    <script>
+        function updateMarriedTimer() {
+            // Wedding date: February 22, 2023
+            const weddingDate = new Date('2023-02-22T00:00:00');
+            const now = new Date();
+            
+            // Show current date
+            document.getElementById('currentDate').textContent = now.toString();
+            
+            // Calculate the difference more accurately using Date objects
+            let years = now.getFullYear() - weddingDate.getFullYear();
+            let months = now.getMonth() - weddingDate.getMonth();
+            let days = now.getDate() - weddingDate.getDate();
+            let hours = now.getHours() - weddingDate.getHours();
+
+            // Adjust for negative values
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+            
+            if (days < 0) {
+                // Get days in previous month
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+                months--;
+            }
+            
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            // Ensure non-negative values
+            years = Math.max(0, years);
+            months = Math.max(0, months);
+            days = Math.max(0, days);
+            hours = Math.max(0, hours);
+
+            // Update the display
+            document.getElementById('years').textContent = years.toString();
+            document.getElementById('months').textContent = months.toString();
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            
+            // Debug info
+            const debugInfo = `
+                Wedding Date: ${weddingDate.toString()}
+                Current Date: ${now.toString()}
+                Time Difference: ${now.getTime() - weddingDate.getTime()} ms
+                Calculated: ${years}y ${months}m ${days}d ${hours}h
+            `;
+            document.getElementById('debug').innerHTML = debugInfo.replace(/\n/g, '<br>');
+            
+            console.log(`Married for: ${years} years, ${months} months, ${days} days, ${hours} hours`);
+        }
+
+        // Update every second for testing
+        setInterval(updateMarriedTimer, 1000);
+        updateMarriedTimer();
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "name": "nidhi-chandan-wedding-website",
+  "version": "1.0.0",
+  "description": "Beautiful Wedding Website for Nidhi & Chandan - Married February 22, 2023 in Kolkata",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o",
+    "build": "echo 'No build process needed for static site'",
+    "serve": "npx http-server . -p 8080",
+    "dev": "npx live-server --port=3000 --open=/index.html"
+  },
+  "keywords": [
+    "wedding",
+    "indian-wedding",
+    "responsive",
+    "website",
+    "html",
+    "css",
+    "javascript",
+    "traditional",
+    "modern"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/indian-wedding-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/indian-wedding-website/issues"
+  },
+  "homepage": "https://yourusername.github.io/indian-wedding-website",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
