@@ -39,10 +39,10 @@ Upload these photos to the `couple` subfolder:
 - **Best choice**: Your best couple photo, professional if available
 
 #### Story Section Photos
-- **File Name**: `how-we-met.jpg` → First story card
-- **File Name**: `first-family-visit.jpg` → Second story card  
-- **File Name**: `first-anniversary.jpg` → Third story card
-- **File Name**: `second-anniversary.jpg` → Fourth story card
+- **File Name**: `how-we-met.jpg` → First story card ("How We Met")
+- **File Name**: `first-family-visit.jpg` → Second story card ("First Family Visit")
+- **File Name**: `first-mountain-together.jpg` → Third story card ("First Mountain Together")
+- **File Name**: `first-ocean-together.jpg` → Fourth story card ("First Ocean Together")
 - **Recommended size**: Landscape photos (wider than tall)
 
 #### Gallery Photos
@@ -140,6 +140,9 @@ images/couple/hero-photo.jpg
 #### Quick Find & Replace List:
 - Hero photo: Replace `https://via.placeholder.com/600x800/f4f4f4/333?text=Bride+%26+Groom+Photo` with `images/couple/hero-photo.jpg`
 - How we met: Replace `https://via.placeholder.com/400x300/ffeaa7/2d3436?text=How+We+Met` with `images/couple/how-we-met.jpg`
+- First family visit: Replace `https://via.placeholder.com/400x300/a29bfe/ffffff?text=First+Family+Visit` with `images/couple/first-family-visit.jpg`
+- First mountain together: Replace `https://via.placeholder.com/400x300/74b9ff/ffffff?text=First+Mountain+Together` with `images/couple/first-mountain-together.jpg`
+- First ocean together: Replace `https://via.placeholder.com/400x300/00cec9/ffffff?text=First+Ocean+Together` with `images/couple/first-ocean-together.jpg`
 - Haldi main: Replace `https://via.placeholder.com/350x250/fdcb6e/2d3436?text=Haldi+Ceremony` with `images/haldi/haldi-main.jpg`
 - Wedding main: Replace `https://via.placeholder.com/350x250/e84393/ffffff?text=Wedding+Ceremony` with `images/wedding/wedding-main.jpg`
 
@@ -153,7 +156,7 @@ images/couple/hero-photo.jpg
 ### ✅ Priority 2 - Important Photos:
 - [ ] All 5 event main photos (prewedding, haldi, ring, wedding, reception)
 - [ ] 4 family photos (both parents)
-- [ ] Story section photos (first family visit, anniversaries)
+- [ ] Story section photos (how we met, first family visit, first mountain together, first ocean together)
 
 ### ✅ Priority 3 - Nice to Have:
 - [ ] Gallery photos for each event (2-5 photos per event)

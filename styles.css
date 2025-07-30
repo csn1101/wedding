@@ -916,6 +916,7 @@ body {
     .married-title {
         font-size: 1.5rem;
     }
+    }
 
     .story-item {
         grid-template-columns: 1fr;
