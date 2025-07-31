@@ -484,4 +484,78 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Dynamic Friends Gallery Loader
+let friendsGalleryLoaded = false; // Prevent multiple loads
+
+function loadFriendsGallery() {
+    const friendsGallery = document.getElementById('friendsGallery');
+    if (!friendsGallery || friendsGalleryLoaded) return;
+    
+    friendsGalleryLoaded = true; // Mark as loaded to prevent duplicates
+    
+    // Clear any existing content
+    friendsGallery.innerHTML = '';
+
+    // Array of potential image names (start with many possibilities)
+    const imageNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // Check for image1.jpg to image50.jpg
+    let loadedImages = 0;
+    let loadPromises = [];
+
+    imageNumbers.forEach(num => {
+        const imagePath = `images/friends/groups/image${num}.jpg`;
+        
+        // Create a promise for each image check
+        const imagePromise = new Promise((resolve, reject) => {
+            const testImg = new Image();
+            testImg.onload = function() {
+                // Image exists, create the gallery item
+                const friendPhoto = document.createElement('div');
+                friendPhoto.className = 'friend-photo';
+                
+                friendPhoto.innerHTML = `
+                    <img src="${imagePath}" alt="Friends and Relatives Group ${num}" class="friend-img">
+                    <div class="friend-overlay">
+                        <span class="friend-caption">Friends & Relatives</span>
+                    </div>
+                `;
+                
+                friendsGallery.appendChild(friendPhoto);
+                loadedImages++;
+
+                // Add click event for modal (if modal exists)
+                const img = friendPhoto.querySelector('.friend-img');
+                if (modal && modalImg) {
+                    friendPhoto.addEventListener('click', () => {
+                        modal.style.display = 'block';
+                        modalImg.src = img.src;
+                        modalImg.alt = img.alt;
+                        document.body.style.overflow = 'hidden';
+                    });
+                }
+                resolve(num);
+            };
+            
+            testImg.onerror = function() {
+                // Image doesn't exist, skip it
+                reject(num);
+            };
+            
+            testImg.src = imagePath;
+        });
+        
+        loadPromises.push(imagePromise);
+    });
+
+    // Wait for all image checks to complete
+    Promise.allSettled(loadPromises).then(() => {
+        console.log(`Loaded ${loadedImages} friends photos dynamically! 📸`);
+        if (loadedImages === 0) {
+            friendsGallery.innerHTML = '<p style="text-align: center; color: #888; grid-column: 1/-1;">No photos found. Add images as image1.jpg, image2.jpg, etc. in the images/friends/groups/ folder.</p>';
+        }
+    });
+}
+
+// Initialize friends gallery when DOM is loaded (single event listener)
+document.addEventListener('DOMContentLoaded', loadFriendsGallery);
+
 console.log('Wedding website JavaScript loaded successfully! 🎉');
