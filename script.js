@@ -490,38 +490,30 @@ let friendsGalleryLoaded = false; // Prevent multiple loads
 function loadFriendsGallery() {
     const friendsGallery = document.getElementById('friendsGallery');
     if (!friendsGallery || friendsGalleryLoaded) return;
-    
     friendsGalleryLoaded = true; // Mark as loaded to prevent duplicates
-    
-    // Clear any existing content
     friendsGallery.innerHTML = '';
 
     // Array of potential image names (start with many possibilities)
     const imageNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // Check for image1.jpg to image50.jpg
     let loadedImages = 0;
     let loadPromises = [];
+    const fallbackImage = 'https://via.placeholder.com/320x420?text=No+Image';
 
     imageNumbers.forEach(num => {
         const imagePath = `images/friends/groups/image${num}.jpg`;
-        
-        // Create a promise for each image check
         const imagePromise = new Promise((resolve, reject) => {
             const testImg = new Image();
             testImg.onload = function() {
-                // Image exists, create the gallery item
                 const friendPhoto = document.createElement('div');
                 friendPhoto.className = 'friend-photo';
-                
                 friendPhoto.innerHTML = `
                     <img src="${imagePath}" alt="Friends and Relatives Group ${num}" class="friend-img">
                     <div class="friend-overlay">
                         <span class="friend-caption">Friends & Relatives</span>
                     </div>
                 `;
-                
                 friendsGallery.appendChild(friendPhoto);
                 loadedImages++;
-
                 // Add click event for modal (if modal exists)
                 const img = friendPhoto.querySelector('.friend-img');
                 if (modal && modalImg) {
@@ -534,28 +526,68 @@ function loadFriendsGallery() {
                 }
                 resolve(num);
             };
-            
             testImg.onerror = function() {
-                // Image doesn't exist, skip it
-                reject(num);
+                // Fallback image if not found
+                const friendPhoto = document.createElement('div');
+                friendPhoto.className = 'friend-photo';
+                friendPhoto.innerHTML = `
+                    <img src="${fallbackImage}" alt="No Image" class="friend-img">
+                    <div class="friend-overlay">
+                        <span class="friend-caption">Friends & Relatives</span>
+                    </div>
+                `;
+                friendsGallery.appendChild(friendPhoto);
+                resolve(num);
             };
-            
             testImg.src = imagePath;
         });
-        
         loadPromises.push(imagePromise);
     });
 
-    // Wait for all image checks to complete
     Promise.allSettled(loadPromises).then(() => {
         console.log(`Loaded ${loadedImages} friends photos dynamically! 📸`);
         if (loadedImages === 0) {
             friendsGallery.innerHTML = '<p style="text-align: center; color: #888; grid-column: 1/-1;">No photos found. Add images as image1.jpg, image2.jpg, etc. in the images/friends/groups/ folder.</p>';
         }
+        setupFriendsGalleryArrows();
     });
 }
 
-// Initialize friends gallery when DOM is loaded (single event listener)
+function setupFriendsGalleryArrows() {
+    const gallery = document.getElementById('friendsGallery');
+    const leftArrow = document.getElementById('friendsLeftArrow');
+    const rightArrow = document.getElementById('friendsRightArrow');
+    if (!gallery || !leftArrow || !rightArrow) return;
+    leftArrow.onclick = function() {
+        gallery.scrollBy({ left: -320, behavior: 'smooth' });
+    };
+    rightArrow.onclick = function() {
+        gallery.scrollBy({ left: 320, behavior: 'smooth' });
+    };
+
+    // Auto-slide functionality
+    let autoSlideInterval = setInterval(() => {
+        // If at the end, scroll back to start
+        if (gallery.scrollLeft + gallery.offsetWidth >= gallery.scrollWidth - 1) {
+            gallery.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            gallery.scrollBy({ left: 320, behavior: 'smooth' });
+        }
+    }, 3000); // Change image every 3 seconds
+
+    // Pause auto-slide on mouse hover
+    gallery.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+    gallery.addEventListener('mouseleave', () => {
+        autoSlideInterval = setInterval(() => {
+            if (gallery.scrollLeft + gallery.offsetWidth >= gallery.scrollWidth - 1) {
+                gallery.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                gallery.scrollBy({ left: 320, behavior: 'smooth' });
+            }
+        }, 3000);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', loadFriendsGallery);
 
 console.log('Wedding website JavaScript loaded successfully! 🎉');
